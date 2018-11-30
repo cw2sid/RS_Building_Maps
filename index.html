@@ -1,0 +1,80 @@
+
+<html>
+<head>
+  <title>Rent Stabilized Changes 07-17</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="loadmap.js"></script>
+  </head>
+  <style>
+  div.tooltip {	
+      position: absolute;			
+      text-align: center;			
+      width: 200px;					
+      min-height: 45px;					
+      padding: 8px;				
+      font: 12px sans-serif;		
+      background: lightsteelblue;	
+      border: 0px;		
+      border-radius: 8px;			
+      pointer-events: none;			
+  }
+
+  .overlay {
+    fill: none;
+    pointer-events: all;
+  }
+  .lines {
+      stroke: #fff;
+  }
+
+  </style>
+  <body>
+    <div id="title" style="text-align:center;">
+      <p style="margin-left: auto; margin-right: auto; font-size: 1.5em; font-weight:bold;">Rent Stabilized Unit Changes 2007-2017</p>
+      </div>
+    <div id="borders" style="text-align: center;">
+      </div>
+    <div style="text-align:center">
+      <svg style="margin:auto;" width="800" height="800"></svg>
+    </div>
+    <script>
+      var borders=[
+          {
+            link:"https://data.cityofnewyork.us/resource/jp9i-3b7y.geojson",
+            name:"Community Districts"
+          },
+          {
+          link: "http://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nyad/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          name: "Assembly Districts"
+          },
+          {
+          link: "http://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nyss/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          name: "State Senate Districts"
+          },
+          {
+          link: "http://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nycc/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          name: "City Council Districts"
+          },
+          {
+          link: "http://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nycg/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          name: "Congressional Districts"
+          }
+        ]
+      loadmap("");
+      loadHeader(0);
+      function loadHeader(current){
+        document.getElementById('borders').innerHTML="";
+      
+     for (var j=0;j<borders.length;j++) {
+        document.getElementById('borders').innerHTML += "<span style='color:grey; margin:10px; font-weight:bold; cursor:pointer; "+(current==j?'text-decoration:underline;':'')+"' onclick='selectMap("+j+",\""+borders[j].link+"\"); '>"+borders[j].name+"</span>"
+     }
+   }
+     function selectMap(j,link){
+       loadmap(link)
+       loadHeader(j)
+     }
+      
+    
+    </script>
+  </body>
+</html>

@@ -146,7 +146,6 @@ function loadmap(districts) {
       function zoomed() {
         g.attr("transform", d3.event.transform);
         buildinglayer.attr("attr",d3.event.transform);
-        
       };
       
       

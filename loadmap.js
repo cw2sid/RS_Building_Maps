@@ -31,16 +31,16 @@ function loadmap(districts) {
     .data(legendlable)
     .enter().append("g")
       .attr("transform", function(d, i) { return "translate(0," + i * 40 + ")"; });
-      legend.append("rect")
-          .attr("width", 15)
-          .attr("height", 20)
-          .attr("x",100)
-          .attr("y",50)
+      legend.append("circle")
+          .attr("r", 10)
+          .attr("cx",100)
+          .attr("cy",50)
+          .attr('fill-opacity','.75')
           .attr("fill", z);
     
       legend.append("text")
-          .attr("x", 90)
-          .attr("y", 60)
+          .attr("x", 80)
+          .attr("y", 50)
           .attr("dy", "0.32em")
           .text(function(d) { return d; });
 

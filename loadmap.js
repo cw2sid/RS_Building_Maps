@@ -12,6 +12,7 @@ function loadmap(districts) {
   .rotate([73.6533, 0])
   .center([0, 40.4806])
   .translate([width/2, height/2]);
+  
   var z = d3.scaleOrdinal()
       .range(["#dc2f0d","#12049d"]);
   var svg = d3.select('svg')
@@ -90,16 +91,17 @@ function loadmap(districts) {
       .data(buildings)
       .enter()
       .append('circle')
+      .attr('class','point')
       .attr('fill',function(d){
         return color(d.percentchange)})
-        .attr( "cx", function(d){
+      .attr( "cx", function(d){
           return albersProjection([d.longitude,d.latitude])[0];})
-          .attr("cy",function(d){
+      .attr("cy",function(d){
             return albersProjection([d.longitude,d.latitude])[1];})
-            .attr("r",function(d){
-              return Math.abs(.5+d.diff/500)
-            })
-            .on("mouseover", function(d) {
+      .attr("r",function(d){
+              return .5+Math.abs(d.diff/500)
+      })
+      .on("mouseover", function(d) {
               div.transition()		
               .duration(200)		
               .style("opacity", .9);		
@@ -112,7 +114,7 @@ function loadmap(districts) {
               .style("left", (d3.event.pageX) + "px")		
               .style("top", (d3.event.pageY - 28) + "px");	
             })					
-            .on("mouseout", function(d) {		
+        .on("mouseout", function(d) {		
               div.transition()		
               .duration(500)		
               .style("opacity", 0);	
@@ -131,11 +133,9 @@ function loadmap(districts) {
           return "#dc2f0d"
         }
       }
-      var circle = buildinglayer.selectAll('circle')
-      function zoomed() {
-        var transform = d3.event.transform;
-        g.attr("transform", transform);
-        buildinglayer.attr("transform", transform)
+    function zoomed() {
+        g.attr("transform", d3.event.transform);
+        buildinglayer.attr("transform", d3.event.transform);
       };
       
       

@@ -1,5 +1,6 @@
-function loadmap(districts) {
+function loadMap(districts,types) {
   //define what we have
+  console.log(types)
   var width = 1400,
   height = 1400
   scale=80000;
@@ -103,7 +104,7 @@ function loadmap(districts) {
       .append('circle')
       .attr('class','point')
       .attr('fill',function(d){
-        return color(d.percentchange)})
+        return color(d)})
       .attr( "cx", function(d){
           return albersProjection([d.longitude,d.latitude])[0];})
       .attr("cy",function(d){
@@ -119,7 +120,7 @@ function loadmap(districts) {
               "Units Changed: "+(d.diff>0?"+":"")+d.diff+"<br/>"+
               "Percent: "+(d.percentchange>0?"+":"")+d.percentchange+"<br/>"+
               "Total Units: "+d.totalUnits+"<br/>"+
-              (d.j51?"j51: "+d.j51+"<br/>":"")+(d.c421a?" 421a: "+d.c421a+"<br/>":"")+
+              (d.j51?"J51: "+d.j51+"<br/>":"")+(d.c421a?" 421a: "+d.c421a+"<br/>":"")+
               (d.scrie?"SCRIE: "+d.scrie+"<br/>":"")+(d.drie?" DRIE: "+d.drie+"<br/>":"")+(d.c420c?" 420c: "+d.c420c:""))	
               .style("left", (d3.event.pageX) + "px")		
               .style("top", (d3.event.pageY - 28) + "px");	
@@ -133,13 +134,18 @@ function loadmap(districts) {
         );
       }
       // color selection
-      function color(change){
-        if (change > 0) {
-          return "#12049d"
-        } else if (change == 0){
+      function color(d){
+        var skip = checkSkip(d);
+        if (skip==false){ 
+          if (d.percentchange > 0) {
+            return "#12049d"
+          } else if (d.percentchange == 0){
+            return 'none'
+          } else if (d.percentchange < 0) {
+            return "#dc2f0d"
+          }
+        }else{
           return 'none'
-        } else if (change < 0) {
-          return "#dc2f0d"
         }
       }
       //zoom supporter function - applies transform
@@ -148,5 +154,25 @@ function loadmap(districts) {
         buildinglayer.attr("transform",d3.event.transform);
       };
       
-      
+      function checkSkip(d){
+        if (d.address=="240 1 AVENUE"){
+          console.log(d)
+        }
+        var skip = 2;
+        var normal = true;
+        for(j in types){
+          if (j !="normal" && d[j] != ""){
+            normal = false;
+            if ((!types[j].value) && (skip !=false)){
+              skip = true;
+            } else {
+              skip=false;
+            };
+          };
+        };
+        if (normal && types.normal.value){
+          skip=false;
+        }
+        return skip
+      }
     }

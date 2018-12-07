@@ -1,6 +1,5 @@
 function loadMap(districts,types) {
   //define what we have
-  console.log(types)
   var width = 1400,
   height = 1400
   scale=80000;
@@ -155,9 +154,6 @@ function loadMap(districts,types) {
       };
       
       function checkSkip(d){
-        if (d.address=="240 1 AVENUE"){
-          console.log(d)
-        }
         var skip = 2;
         var normal = true;
         for(j in types){

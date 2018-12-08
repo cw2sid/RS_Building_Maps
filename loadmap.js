@@ -53,31 +53,23 @@ function loadMap(districts,types) {
   .attr("class", "tooltip")				
   .style("opacity", 0);
   //set defualt district boundaries
-  var geojsonurl="https://data.cityofnewyork.us/resource/jp9i-3b7y.geojson"
+  var geojson=nycCommunityDistricts
   if (districts !=""){
-    geojsonurl = districts
+    geojson = districts
   }
-  //send request for geojson data
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) { //got geojson response
-      //parse the response
-      var districtBoundaries = JSON.parse(this.responseText);
-      //add the paths to the svg
-      g.selectAll('path')
-      .data(districtBoundaries.features)
-      .enter()
-      .append('path')
-      .attr('fill', '#ccc')
-      .attr('class','lines')
-      .attr('d', geoPath);
-      //load building data after load 
-      loadbuildings()
-    }
-  };
-  //actual call to endpoint
-  xmlhttp.open("GET",geojsonurl, true);
-  xmlhttp.send(); 
+  var districtBoundaries = geojson
+  //add the paths to the svg
+  g.selectAll('path')
+  .data(districtBoundaries.features)
+  .enter()
+  .append('path')
+  .attr('fill', '#ccc')
+  .attr('class','lines')
+  .attr('d', geoPath);
+  //load building data after load 
+  loadbuildings();
+
+  
   //to load the buildings
   function loadbuildings(){
     //parse the data from the csv, then

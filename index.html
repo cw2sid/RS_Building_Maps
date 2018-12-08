@@ -4,8 +4,12 @@
   <title>Rent Stabilized Changes 07-17</title>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="loadmap.js"></script>
-
-  </head>
+  <script src="nyc_assembly_districts.geojson"></script>
+  <script src="nyc_city_council_districts.geojson"></script>
+  <script src="nyc_community_districts.geojson"></script>
+  <script src="nyc_congressional_districts.geojson"></script>
+  <script src="nyc_state_senate_districts.geojson"></script>
+</head>
   <style>
   html, body, h1, h2, h3, h4, h5, h6,p,text {
   font-family: "Comic Sans MS", cursive, sans-serif;
@@ -84,23 +88,23 @@
     <script>
       var borders=[
           {
-            link:"https://data.cityofnewyork.us/resource/jp9i-3b7y.geojson",
+            object: nycCommunityDistricts,
             name:"Community Districts"
           },
           {
-          link: "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nyad/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          object: nycAssemblyDistricts,
           name: "Assembly Districts"
           },
           {
-          link: "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nyss/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          object: nycStateSenateDistricts,
           name: "State Senate Districts"
           },
           {
-          link: "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nycc/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          object: nycCityCouncilDistricts,
           name: "City Council Districts"
           },
           {
-          link: "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nycg/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson",
+          object: nycCongressionalDistricts,
           name: "Congressional Districts"
           }
         ];
@@ -148,12 +152,12 @@
        checkboxes.innerHTML += "<input class='primary' type='button' value='Reload' onclick='loadTypesMap()'/>"
      }
      function selectMap(j){
-       loadMap(borders[j].link, types)
+       loadMap(borders[j].object, types)
        loadHeader(j)
      }
      function loadTypesMap(){
        loadTypes();
-       loadMap(borders[map].link, types);
+       loadMap(borders[map].object, types);
      }
     function loadTypes(){
       for (x in types){

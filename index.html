@@ -9,10 +9,11 @@
   <script src="nyc_community_districts.geojson"></script>
   <script src="nyc_congressional_districts.geojson"></script>
   <script src="nyc_state_senate_districts.geojson"></script>
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 </head>
   <style>
   html, body, h1, h2, h3, h4, h5, h6,p,text {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+    font-family: 'Fira Sans', sans-serif;
   }
   
   div.tooltip {	
@@ -42,6 +43,7 @@
     margin:10px; 
     font-weight:bold; 
     cursor:pointer;
+    white-space: nowrap;
   }
   .primary {
     color: white;
@@ -136,7 +138,7 @@
         document.getElementById('borders').innerHTML="";
         map=current;
         for (var j=0;j<borders.length;j++) {
-          document.getElementById('borders').innerHTML += "<span class='selection' style=' "+(current==j?'text-decoration:underline;':'')+"' onclick='selectMap("+j+"); '>"+borders[j].name+"</span>"
+          document.getElementById('borders').innerHTML += "<div style='display:inline-block;'><span class='selection' style=' "+(current==j?'text-decoration:underline;':'')+"' onclick='selectMap("+j+"); '>"+borders[j].name+"</span></div>"
         }
       }
      function loadSidebar(types){

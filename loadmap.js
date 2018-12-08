@@ -26,9 +26,9 @@ function loadMap(districts,types) {
   var buildinglayer = svg.append('g')
   //just for legend
   var z = d3.scaleOrdinal()
-      .range(["#dc2f0d","#12049d"]);
+      .range(["#dc2f0d","#12049d","#000"]);
   //make legend
-  var legendlable=["Lost Units","Gained Units"];
+  var legendlable=["Lost Units","Gained Units","No Change"];
   var legend = svg.append('g')
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
@@ -131,7 +131,7 @@ function loadMap(districts,types) {
           if (d.percentchange > 0) {
             return "#12049d"
           } else if (d.percentchange == 0){
-            return 'none'
+            return '#000'
           } else if (d.percentchange < 0) {
             return "#dc2f0d"
           }
@@ -160,6 +160,9 @@ function loadMap(districts,types) {
         };
         if (normal && types.normal.value){
           skip=false;
+        }
+        if (d.percentchange==0 && !types.nochange.value){
+          skip=true;
         }
         return skip
       }

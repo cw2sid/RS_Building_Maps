@@ -66,6 +66,9 @@ function loadMap(districts,types) {
   .attr('fill', '#ccc')
   .attr('class','lines')
   .attr('d', geoPath);
+  if (transform !=""){
+    prezoom()
+  }
   //load building data after load 
   loadbuildings();
 
@@ -141,6 +144,7 @@ function loadMap(districts,types) {
       }
       //zoom supporter function - applies transform
       function zoomed() {
+        transform=d3.event.transform
         g.attr("transform", d3.event.transform);
         buildinglayer.attr("transform",d3.event.transform);
       };
@@ -150,9 +154,6 @@ function loadMap(districts,types) {
         var normal = true;
         for(j in types){
           if (d[j] != "" && d[j] != undefined){
-            if (d.address == "69-16 66 DRIVE"){
-              console.log("j: "+j+" d[j]: "+d[j]+" normal: "+normal)
-            }
             normal = false;
             if ((!types[j].value) && (skip !=false)){
               skip = true;
@@ -163,17 +164,14 @@ function loadMap(districts,types) {
         };
         if (normal && types.normal.value){
           skip=false;
-          if (d.address == "69-16 66 DRIVE"){
-            console.log("in normal: "+skip)
-          }
         }
         if (d.percentchange==0 && !types.nochange.value){
           skip=true;
-          if (d.address == "69-16 66 DRIVE"){
-            console.log("in nochange: "+skip)
-          }
-        }
-        
+        }  
         return skip
+      }
+      function prezoom(){
+        g.attr("transform", transform);
+        buildinglayer.attr("transform",transform);
       }
     }

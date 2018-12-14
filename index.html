@@ -136,6 +136,7 @@
         
       };
       var map=0;
+      var transform="";
       loadMap("",types);
       loadHeader(map);
       loadSidebar(types);
@@ -159,7 +160,7 @@
        checkboxes.innerHTML += "<input class='primary' type='button' value='Reload' onclick='loadTypesMap()'/>"
      }
      function selectMap(j){
-       loadMap(borders[j].object, types)
+       loadMap(borders[j].object, types, transform)
        loadHeader(j)
      }
      function loadTypesMap(){

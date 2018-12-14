@@ -7,7 +7,7 @@ function loadMap(districts,types) {
   const zoom = d3.zoom()
   .scaleExtent([1, 20])
   .translateExtent([[0,0], [width, height]])
-  .extent([[0, 0], [width+200, height]])
+  .extent([[0, 0], [width, height]])
   .on("zoom", zoomed);
   //define projection
   var svg = d3.select('svg')
@@ -149,7 +149,10 @@ function loadMap(districts,types) {
         var skip = 2;
         var normal = true;
         for(j in types){
-          if (j !="normal" && d[j] != ""){
+          if (d[j] != "" && d[j] != undefined){
+            if (d.address == "69-16 66 DRIVE"){
+              console.log("j: "+j+" d[j]: "+d[j]+" normal: "+normal)
+            }
             normal = false;
             if ((!types[j].value) && (skip !=false)){
               skip = true;
@@ -160,10 +163,17 @@ function loadMap(districts,types) {
         };
         if (normal && types.normal.value){
           skip=false;
+          if (d.address == "69-16 66 DRIVE"){
+            console.log("in normal: "+skip)
+          }
         }
         if (d.percentchange==0 && !types.nochange.value){
           skip=true;
+          if (d.address == "69-16 66 DRIVE"){
+            console.log("in nochange: "+skip)
+          }
         }
+        
         return skip
       }
     }

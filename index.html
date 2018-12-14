@@ -54,6 +54,15 @@
     border-radius: 5px;
     cursor:pointer;
   }
+  .filter {
+    padding-left: 10px;
+    font-size: .8em;
+  }
+  .filterheader {
+    font-weight:bold;
+    font-size: .9em;
+    margin-bottom: 0px;
+  }
   #title {
    margin-left: auto; 
    margin-right: auto; 
@@ -62,26 +71,31 @@
   }
   #body{
     text-align:center; 
-    width:900px; 
+    width:930px; 
     margin:30px auto;
   }
   #sideBar{
-    width:100px; 
+    width:105px; 
     float:left; 
     vertical-align:top; 
     text-align:left;
   }
+  
   </style>
   <body>
-    <div  style="text-align:center;">
+    <div style="text-align:center;">
       <p id="title" >Rent Stabilized Unit Changes 2007-2017</p>
       </div>
     <div id="borders" style="text-align: center;">
       </div>
     <div id="body" >
       <div id="sideBar" >
-        <p>Controls:</p>
-        <div id="checkboxes" style="width:80px;" >
+        <p class="selection">Controls:</p>
+        <div class="filter" id="taxes" style="width:100px;" >
+        </div>
+        <div class="filter" id="exemptions" style="width:100px;" >
+        </div>
+        <div class="filter" id="other" style="width:100px;" >
         </div>
       </div>
       <div style="width:800px; float:right;">
@@ -111,34 +125,49 @@
           name: "Congressional Districts"
           }
         ];
-      var types = {
-        j51:{
-          value: true,
-          title: "J51"},
-        scrie:{
-          value:true,
-          title: "SCRIE"}, 
-        drie:{
-          value:true,
-          title: "DRIE"},
-        c421a:{
-          value: true,
-          title: "421a"},
-        c420c:{
-          value: true,
-          title:"420c"},
-        normal:{
-          value: true,
-          title: "No listed abatements"},
-        nochange:{
-          value: true,
-          title: "No Change"}
-        
-      };
+        var filters = {
+          taxes: {
+            title: "Tax Abatements",
+            types:{
+              j51:{
+                value: true,
+                title: "J-51"},
+              c421a:{
+                value: true,
+                title: "421a"},
+              c420c:{
+                value: true,
+                title:"420c"},
+              normal:{
+                value: true,
+                title: "No listed tax abatements"},
+              }
+            },
+            exemptions: {
+              title: "Rent Increase Exemptions",
+              types:{
+                scrie:{
+                  value:true,
+                  title: "SCRIE"}, 
+                drie:{
+                  value:true,
+                  title: "DRIE"},
+                }
+            },
+            other: {
+              title:"Other Options",
+              types:{
+                nochange:{
+                  value: true,
+                  title: "No Change"}
+              }
+            }
+        };
       var map=0;
-      loadMap("",types);
+      var transform="";
+      loadMap("",filters);
       loadHeader(map);
-      loadSidebar(types);
+      loadSidebar(filters);
       function loadHeader(current){
         document.getElementById('borders').innerHTML="";
         map=current;
@@ -146,29 +175,34 @@
           document.getElementById('borders').innerHTML += "<div style='display:inline-block;'><span class='selection' style=' "+(current==j?'text-decoration:underline;':'')+"' onclick='selectMap("+j+"); '>"+borders[j].name+"</span></div>"
         }
       }
-     function loadSidebar(types){
-       var checkboxes=document.getElementById('checkboxes')
-       checkboxes.innerHTML="";
-       for (i in types){
-         if (types[i].value) {
-           checkboxes.innerHTML += "<input type='checkbox' id="+i+" checked >"+types[i].title+"</input><br/>"
-         }else{
-           checkboxes.innerHTML += "<input type='checkbox' id="+i+" >"+types[i].title+"</input>"
+     function loadSidebar(filters){
+       for (i in filters){
+        var checkboxes=document.getElementById(i)
+        checkboxes.innerHTML="";
+        checkboxes.innerHTML +="<p class='filterheader'>" + filters[i].title + ":</p>"
+         for (k in filters[i]["types"]){
+           if (filters[i]["types"][k].value) {
+             checkboxes.innerHTML += "<input type='checkbox' id="+k+" checked >"+filters[i]["types"][k].title+"</input><br/>"
+           }else{
+             checkboxes.innerHTML += "<input type='checkbox' id="+k+" >"+filters[i]["types"][k].title+"</input>"
+           }
          }
-       }
+        }
        checkboxes.innerHTML += "<input class='primary' type='button' value='Reload' onclick='loadTypesMap()'/>"
      }
      function selectMap(j){
-       loadMap(borders[j].object, types)
+       loadMap(borders[j].object, filters, transform)
        loadHeader(j)
      }
      function loadTypesMap(){
        loadTypes();
-       loadMap(borders[map].object, types);
+       loadMap(borders[map].object, filters);
      }
     function loadTypes(){
-      for (x in types){
-        types[x].value=document.getElementById(x).checked;
+      for (x in filters){
+        for (y in filters[x]["types"]){
+          filters[x]["types"][y].value=document.getElementById(y).checked;
+        }
       }
     }
     
